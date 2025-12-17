@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corbett Maths 5-a-Day</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 { margin-bottom: 0.5rem; }
+    p { color: #555; }
+    select, button, input {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button.secondary { background: #475569; }
+    button:hover { opacity: 0.9; }
+    .date { margin-top: 1rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Corbett Maths 5-a-Day</h1>
+    <p>Select a date, level, and open the worksheet or mark scheme</p>
+
+    <input type="date" id="datePicker" />
+
+    <select id="level">
+      <option value="numeracy">Numeracy</option>
+      <option value="foundation">Foundation</option>
+      <option value="foundation-plus">Foundation Plus</option>
+      <option value="higher">Higher</option>
+      <option value="higher-plus">Higher Plus</option>
+    </select>
+
+    <button onclick="openWorksheet(false)">Open Worksheet</button>
+    <button class="secondary" onclick="openWorksheet(true)">Open Mark Scheme</button>
+
+    <div class="date" id="today"></div>
+  </div>
+
+  <script>
+    const today = new Date();
+    const datePicker = document.getElementById('datePicker');
+    datePicker.valueAsDate = today;
+
+    const formatted = today.toLocaleDateString('en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+    document.getElementById('today').textContent = `Today: ${formatted}`;
+
+    function openWorksheet(isMarkScheme) {
+      const level = document.getElementById('level').value;
+      const selectedDate = new Date(datePicker.value);
+      if (isNaN(selectedDate)) {
+        alert('Please select a valid date');
+        return;
+      }
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const year = selectedDate.getFullYear();
+      const suffix = isMarkScheme ? '-answers' : '';
+      const url = `https://corbettmaths.com/wp-content/uploads/${year}/${month}/5-a-day-${level}-${day}-${month}-${year}${suffix}.pdf`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
